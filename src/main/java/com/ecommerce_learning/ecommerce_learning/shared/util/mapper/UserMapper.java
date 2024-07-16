@@ -1,5 +1,6 @@
 package com.ecommerce_learning.ecommerce_learning.shared.util.mapper;
 
+import com.ecommerce_learning.ecommerce_learning.application.web.detailOrder.response.DetailOrderResponse;
 import com.ecommerce_learning.ecommerce_learning.application.web.order.response.OrderResponse;
 import com.ecommerce_learning.ecommerce_learning.application.web.product.response.ProductResponse;
 import com.ecommerce_learning.ecommerce_learning.application.web.user.request.UserRequest;
@@ -15,6 +16,14 @@ import java.util.List;
 
 @Component
 public class UserMapper {
+
+    private final ProductMapper productMapper;
+    private final OrderMapper orderMapper;
+
+    public UserMapper(ProductMapper productMapper, OrderMapper orderMapper) {
+        this.productMapper = productMapper;
+        this.orderMapper = orderMapper;
+    }
 
     public User toUser(UserRequest userRequest) {
         return User.builder()
@@ -37,8 +46,8 @@ public class UserMapper {
                 .address(user.getAddress())
                 .phone(user.getPhone())
                 .typo(user.getTypo())
-                .orders(mapOrders(user.getOrders()))
-                .products(mapProducts(user.getProducts()))
+                .orders(orderMapper.mapOrders(user.getOrders()))
+                .products(productMapper.mapProducts(user.getProducts()))
                 .build();
     }
 
@@ -68,13 +77,14 @@ public class UserMapper {
                 .build();
     }
 
-    private List<OrderResponse> mapOrders(List<Order> orders) {
-        // Implement the mapping logic
-        return new ArrayList<>();
-    }
-
-    private List<ProductResponse> mapProducts(List<Product> products) {
-        // Implement the mapping logic
-        return new ArrayList<>();
+    public User toUser(UserResponse user) {
+        return User.builder()
+                .name(user.getName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .address(user.getAddress())
+                .phone(user.getPhone())
+                .typo(user.getTypo())
+                .build();
     }
 }
