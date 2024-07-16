@@ -1,18 +1,10 @@
 package com.ecommerce_learning.ecommerce_learning.shared.util.mapper;
 
-import com.ecommerce_learning.ecommerce_learning.application.web.detailOrder.response.DetailOrderResponse;
-import com.ecommerce_learning.ecommerce_learning.application.web.order.response.OrderResponse;
-import com.ecommerce_learning.ecommerce_learning.application.web.product.response.ProductResponse;
 import com.ecommerce_learning.ecommerce_learning.application.web.user.request.UserRequest;
 import com.ecommerce_learning.ecommerce_learning.application.web.user.response.UserResponse;
-import com.ecommerce_learning.ecommerce_learning.domain.model.Order;
-import com.ecommerce_learning.ecommerce_learning.domain.model.Product;
 import com.ecommerce_learning.ecommerce_learning.domain.model.User;
 import com.ecommerce_learning.ecommerce_learning.infrastructure.entity.UserDB;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class UserMapper {

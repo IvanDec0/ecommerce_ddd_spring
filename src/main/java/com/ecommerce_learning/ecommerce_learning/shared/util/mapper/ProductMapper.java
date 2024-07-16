@@ -1,6 +1,5 @@
 package com.ecommerce_learning.ecommerce_learning.shared.util.mapper;
 
-import com.ecommerce_learning.ecommerce_learning.application.web.order.response.OrderResponse;
 import com.ecommerce_learning.ecommerce_learning.application.web.product.request.ProductRequest;
 import com.ecommerce_learning.ecommerce_learning.application.web.product.response.ProductResponse;
 import com.ecommerce_learning.ecommerce_learning.domain.model.Product;
