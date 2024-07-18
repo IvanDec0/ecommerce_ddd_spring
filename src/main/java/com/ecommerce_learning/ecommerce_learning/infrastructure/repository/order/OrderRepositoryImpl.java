@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderRepositoryImpl implements OrderRepository {
 
-    private MongoOrderRepository mongoOrderRepository;
+    private final MongoOrderRepository mongoOrderRepository;
 
     public OrderRepositoryImpl(MongoOrderRepository mongoOrderRepository) {
         this.mongoOrderRepository = mongoOrderRepository;

@@ -1,5 +1,6 @@
 package com.ecommerce_learning.ecommerce_learning.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class User {
     private String address;
     private String phone;
     private String typo;
+    @JsonIgnore
     private String password;
 
     private List<Order> orders = new ArrayList<>();

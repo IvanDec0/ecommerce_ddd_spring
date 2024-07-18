@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private MongoProductRepository mongoProductRepository;
+    private final MongoProductRepository mongoProductRepository;
 
     public ProductRepositoryImpl(MongoProductRepository mongoProductRepository) {
         this.mongoProductRepository = mongoProductRepository;

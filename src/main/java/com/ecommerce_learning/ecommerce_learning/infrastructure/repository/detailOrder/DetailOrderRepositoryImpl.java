@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DetailOrderRepositoryImpl implements DetailOrderRepository {
 
-    private MongoDetailOrderRepository mongoDetailOrderRepository;
+    private final MongoDetailOrderRepository mongoDetailOrderRepository;
 
     public DetailOrderRepositoryImpl(MongoDetailOrderRepository mongoDetailOrderRepository) {
         this.mongoDetailOrderRepository = mongoDetailOrderRepository;
