@@ -3,6 +3,8 @@ package com.ecommerce_learning.ecommerce_learning.shared.util.mapper;
 import com.ecommerce_learning.ecommerce_learning.application.web.order.request.OrderRequest;
 import com.ecommerce_learning.ecommerce_learning.application.web.order.response.OrderResponse;
 import com.ecommerce_learning.ecommerce_learning.domain.model.Order;
+import com.ecommerce_learning.ecommerce_learning.infrastructure.entity.OrderDB;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,7 +16,8 @@ public class OrderMapper {
     private final UserMapper userMapper;
     private final DetailOrderMapper detailOrderMapper;
 
-    public OrderMapper(UserMapper userMapper, DetailOrderMapper detailOrderMapper) {
+    public OrderMapper(@Lazy UserMapper userMapper,
+                       @Lazy DetailOrderMapper detailOrderMapper) {
         this.userMapper = userMapper;
         this.detailOrderMapper = detailOrderMapper;
     }
@@ -30,6 +33,17 @@ public class OrderMapper {
                 .build();
     }
 
+    public Order toOrder(OrderDB orderDB) {
+        return Order.builder()
+                .id(orderDB.getOrderNumber())
+                .orderDate(orderDB.getOrderDate())
+                .orderShippedDate(orderDB.getOrderShippedDate())
+                .orderStatus(orderDB.getOrderStatus())
+                .orderTotal(orderDB.getOrderTotal())
+                .user(userMapper.toUser(orderDB.getUser()))
+                .build();
+    }
+
     public OrderRequest toOrderRequest(Order order) {
         return OrderRequest.builder()
                 .orderNumber(order.getId())
@@ -42,6 +56,9 @@ public class OrderMapper {
     }
 
     public List<OrderResponse> mapOrders(List<Order> orders) {
+        if (orders == null) {
+            return null;
+        }
         List<OrderResponse> orderResponses = new ArrayList<>();
         for (Order order : orders) {
             OrderResponse orderResponse = OrderResponse.builder()

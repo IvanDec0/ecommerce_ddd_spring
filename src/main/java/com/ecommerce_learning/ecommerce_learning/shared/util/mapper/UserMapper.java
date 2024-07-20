@@ -1,9 +1,12 @@
 package com.ecommerce_learning.ecommerce_learning.shared.util.mapper;
 
+import com.ecommerce_learning.ecommerce_learning.application.web.user.request.LoginRequest;
 import com.ecommerce_learning.ecommerce_learning.application.web.user.request.UserRequest;
 import com.ecommerce_learning.ecommerce_learning.application.web.user.response.UserResponse;
+import com.ecommerce_learning.ecommerce_learning.domain.model.LoginUser;
 import com.ecommerce_learning.ecommerce_learning.domain.model.User;
 import com.ecommerce_learning.ecommerce_learning.infrastructure.entity.UserDB;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +15,8 @@ public class UserMapper {
     private final ProductMapper productMapper;
     private final OrderMapper orderMapper;
 
-    public UserMapper(ProductMapper productMapper, OrderMapper orderMapper) {
+    public UserMapper(@Lazy ProductMapper productMapper,
+                      @Lazy OrderMapper orderMapper) {
         this.productMapper = productMapper;
         this.orderMapper = orderMapper;
     }
@@ -77,6 +81,25 @@ public class UserMapper {
                 .address(user.getAddress())
                 .phone(user.getPhone())
                 .typo(user.getTypo())
+                .build();
+    }
+
+    public LoginUser toLoginUser(LoginRequest loginRequest) {
+        return LoginUser.builder()
+                .email(loginRequest.getEmail())
+                .password(loginRequest.getPassword())
+                .build();
+    }
+
+    public UserResponse toUserResponse(UserDB userDB) {
+        return UserResponse.builder()
+                .id(userDB.getId())
+                .name(userDB.getName())
+                .username(userDB.getUsername())
+                .email(userDB.getEmail())
+                .address(userDB.getAddress())
+                .phone(userDB.getPhone())
+                .typo(userDB.getTypo())
                 .build();
     }
 }

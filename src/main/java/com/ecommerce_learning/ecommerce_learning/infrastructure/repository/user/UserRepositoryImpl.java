@@ -55,4 +55,9 @@ public class UserRepositoryImpl implements UserRepository {
     public Boolean existsById(String id) {
         return mongoUserRepository.existsById(id);
     }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return mongoUserRepository.findByEmail(email).map(mapper::toUser);
+    }
 }

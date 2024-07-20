@@ -4,6 +4,7 @@ import com.ecommerce_learning.ecommerce_learning.application.web.product.request
 import com.ecommerce_learning.ecommerce_learning.application.web.product.response.ProductResponse;
 import com.ecommerce_learning.ecommerce_learning.domain.model.Product;
 import com.ecommerce_learning.ecommerce_learning.infrastructure.entity.ProductDB;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,7 +17,9 @@ public class ProductMapper {
     private final OrderMapper orderMapper;
     private final DetailOrderMapper detailOrderMapper;
 
-    public ProductMapper(UserMapper userMapper, OrderMapper orderMapper, DetailOrderMapper detailOrderMapper) {
+    public ProductMapper(@Lazy UserMapper userMapper,
+                         @Lazy OrderMapper orderMapper,
+                         @Lazy DetailOrderMapper detailOrderMapper) {
         this.userMapper = userMapper;
         this.orderMapper = orderMapper;
         this.detailOrderMapper = detailOrderMapper;
@@ -63,6 +66,9 @@ public class ProductMapper {
     }
 
     public List<ProductResponse> mapProducts(List<?> products) {
+        if (products == null) {
+            return null;
+        }
         List<ProductResponse> productResponses = new ArrayList<>();
         if (!products.isEmpty()) {
             Object firstElement = products.get(0);
@@ -76,8 +82,8 @@ public class ProductMapper {
                             .price(product.getPrice())
                             .stock(product.getStock())
                             .image(product.getImage())
-                            .seller(userMapper.toUserResponse(product.getSeller()))
-                            .detailOrders(detailOrderMapper.mapDetailOrders(product.getDetailOrders()))
+                            .seller(product.getSeller() == null ? null : userMapper.toUserResponse(product.getSeller()))
+                            .detailOrders(product.getDetailOrders() == null ? null : detailOrderMapper.mapDetailOrders(product.getDetailOrders()))
                             .build();
                     productResponses.add(productResponse);
                 }
@@ -92,5 +98,26 @@ public class ProductMapper {
             }
         }
         return productResponses;
+    }
+
+    public List<Product> mapProductsDBToProduct(List<ProductDB> productsDB) {
+        if (productsDB == null) {
+            return null;
+        }
+        List<Product> products = new ArrayList<>();
+                for (ProductDB prod : productsDB) {
+                    Product product = Product.builder()
+                            .id(prod.getId())
+                            .name(prod.getName())
+                            .description(prod.getDescription())
+                            .price(prod.getPrice())
+                            .stock(prod.getStock())
+                            .image(prod.getImage())
+                            .seller(prod.getSeller() == null ? null : userMapper.toUser(prod.getSeller()))
+                            .detailOrders(prod.getDetailOrders() == null ? null : detailOrderMapper.mapDetailOrdersResponse(prod.getDetailOrders()))
+                            .build();
+                    products.add(product);
+                }
+        return products;
     }
 }
