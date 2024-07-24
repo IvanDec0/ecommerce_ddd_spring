@@ -25,7 +25,7 @@ public class SwaggerConfig {
         openAPI.addSecurityItem(new SecurityRequirement().
                 addList("Bearer Authentication"));
         openAPI.setServers(Arrays.asList(
-                new Server().url("http://localhost:"+port), // URL for local development
+                new Server().url("http://localhost:" + port), // URL for local development
                 new Server().url("https://google.com") // URL for production
         ));
         openAPI.components(new Components().addSecuritySchemes

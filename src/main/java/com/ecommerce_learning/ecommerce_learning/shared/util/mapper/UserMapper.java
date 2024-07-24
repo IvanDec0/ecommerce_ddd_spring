@@ -33,6 +33,18 @@ public class UserMapper {
                 .build();
     }
 
+    public User toUserEmail(String email) {
+        return User.builder()
+                .name(null)
+                .username(null)
+                .email(email)
+                .address(null)
+                .phone(null)
+                .typo(null)
+                .password(null)
+                .build();
+    }
+
     public UserResponse toUserResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())

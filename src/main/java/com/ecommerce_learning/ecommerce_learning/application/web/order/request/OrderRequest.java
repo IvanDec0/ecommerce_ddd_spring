@@ -1,6 +1,5 @@
 package com.ecommerce_learning.ecommerce_learning.application.web.order.request;
 
-import com.ecommerce_learning.ecommerce_learning.application.web.user.response.UserResponse;
 import lombok.*;
 
 import java.util.Date;
@@ -16,6 +15,6 @@ public class OrderRequest {
     private Date orderShippedDate;
     private String orderStatus;
     private double orderTotal;
-    private UserResponse user;
+    private String user;
     //private DetailOrderDto detailOrder;
 }

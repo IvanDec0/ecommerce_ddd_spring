@@ -14,14 +14,11 @@ import java.util.List;
 public class ProductMapper {
 
     private final UserMapper userMapper;
-    private final OrderMapper orderMapper;
     private final DetailOrderMapper detailOrderMapper;
 
     public ProductMapper(@Lazy UserMapper userMapper,
-                         @Lazy OrderMapper orderMapper,
                          @Lazy DetailOrderMapper detailOrderMapper) {
         this.userMapper = userMapper;
-        this.orderMapper = orderMapper;
         this.detailOrderMapper = detailOrderMapper;
     }
 
@@ -41,7 +38,7 @@ public class ProductMapper {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stock(product.getStock())
-                .detailOrders(detailOrderMapper.mapDetailOrders(product.getDetailOrders()))
+                .detailOrders(detailOrderMapper.mapDetailOrdersResponse(product.getDetailOrders()))
                 .build();
     }
 
@@ -83,7 +80,7 @@ public class ProductMapper {
                             .stock(product.getStock())
                             .image(product.getImage())
                             .seller(product.getSeller() == null ? null : userMapper.toUserResponse(product.getSeller()))
-                            .detailOrders(product.getDetailOrders() == null ? null : detailOrderMapper.mapDetailOrders(product.getDetailOrders()))
+                            .detailOrders(product.getDetailOrders() == null ? null : detailOrderMapper.mapDetailOrdersResponse(product.getDetailOrders()))
                             .build();
                     productResponses.add(productResponse);
                 }
@@ -105,19 +102,54 @@ public class ProductMapper {
             return null;
         }
         List<Product> products = new ArrayList<>();
-                for (ProductDB prod : productsDB) {
-                    Product product = Product.builder()
-                            .id(prod.getId())
-                            .name(prod.getName())
-                            .description(prod.getDescription())
-                            .price(prod.getPrice())
-                            .stock(prod.getStock())
-                            .image(prod.getImage())
-                            .seller(prod.getSeller() == null ? null : userMapper.toUser(prod.getSeller()))
-                            .detailOrders(prod.getDetailOrders() == null ? null : detailOrderMapper.mapDetailOrdersResponse(prod.getDetailOrders()))
-                            .build();
-                    products.add(product);
-                }
+        for (ProductDB prod : productsDB) {
+            Product product = Product.builder()
+                    .id(prod.getId())
+                    .name(prod.getName())
+                    .description(prod.getDescription())
+                    .price(prod.getPrice())
+                    .stock(prod.getStock())
+                    .image(prod.getImage())
+                    .seller(prod.getSeller() == null ? null : userMapper.toUser(prod.getSeller()))
+                    .detailOrders(prod.getDetailOrders() == null ? null : detailOrderMapper.mapDetailOrders(prod.getDetailOrders()))
+                    .build();
+            products.add(product);
+        }
         return products;
+    }
+
+    public List<ProductDB> mapProductsToProductDB(List<Product> products) {
+        if (products == null) {
+            return null;
+        }
+        List<ProductDB> productsDB = new ArrayList<>();
+        for (Product prod : products) {
+            ProductDB product = ProductDB.builder()
+                    .id(prod.getId())
+                    .name(prod.getName())
+                    .description(prod.getDescription())
+                    .price(prod.getPrice())
+                    .stock(prod.getStock())
+                    .image(prod.getImage())
+                    .seller(prod.getSeller() == null ? null : userMapper.toMongoUser(prod.getSeller()))
+                    .detailOrders(prod.getDetailOrders() == null ? null : detailOrderMapper.mapDetailOrdersDB(prod.getDetailOrders()))
+                    .build();
+            productsDB.add(product);
+        }
+        return productsDB;
+    }
+
+    public List<Product> mapProductsEmpty(List<String> products) {
+        if (products == null) {
+            return null;
+        }
+        List<Product> productResponses = new ArrayList<>();
+        for (String product : products) {
+            Product productResponse = Product.builder()
+                    .id(product)
+                    .build();
+            productResponses.add(productResponse);
+        }
+        return productResponses;
     }
 }

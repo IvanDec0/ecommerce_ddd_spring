@@ -25,8 +25,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        Product productExisted = productRepository.findById(product.getId()).orElseThrow(() -> new RuntimeException("Product not found"));
+    public Product updateProduct(String id, Product product) {
+        Product productExisted = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         productExisted.setName(product.getName());
         productExisted.setPrice(product.getPrice());
         productExisted.setDescription(product.getDescription());
@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
         if (productRepository.existsByName(product.getName())) {
             throw new RuntimeException("Product already exist");
         }
-        return productRepository.save(productExisted);
+        return productRepository.update(productExisted);
     }
 
     @Override

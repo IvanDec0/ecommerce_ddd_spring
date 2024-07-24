@@ -5,7 +5,6 @@ import com.ecommerce_learning.ecommerce_learning.domain.model.Roles;
 import com.ecommerce_learning.ecommerce_learning.domain.model.User;
 import com.ecommerce_learning.ecommerce_learning.domain.repository.UserRepository;
 import com.ecommerce_learning.ecommerce_learning.domain.service.interfaces.UserService;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +18,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     //private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository){
-                           //PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
+        //PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         //this.passwordEncoder = passwordEncoder;
     }

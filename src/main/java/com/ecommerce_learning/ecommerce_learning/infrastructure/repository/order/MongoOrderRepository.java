@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MongoOrderRepository extends MongoRepository<OrderDB, String> {
+    Boolean existsByOrderNumber(String orderNumber);
 }

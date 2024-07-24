@@ -22,14 +22,14 @@ public class OrderMapper {
         this.detailOrderMapper = detailOrderMapper;
     }
 
-    public Order toOrder(OrderRequest orderRequest) {
+    public Order toOrderEmailUser(OrderRequest orderRequest) {
         return Order.builder()
                 .id(orderRequest.getOrderNumber())
                 .orderDate(orderRequest.getOrderDate())
                 .orderShippedDate(orderRequest.getOrderShippedDate())
                 .orderStatus(orderRequest.getOrderStatus())
                 .orderTotal(orderRequest.getOrderTotal())
-                .user(userMapper.toUser(orderRequest.getUser()))
+                .user(userMapper.toUserEmail(orderRequest.getUser()))
                 .build();
     }
 
@@ -44,6 +44,17 @@ public class OrderMapper {
                 .build();
     }
 
+    public OrderDB toOrderDB(Order order) {
+        return OrderDB.builder()
+                .orderNumber(order.getId())
+                .orderDate(order.getOrderDate())
+                .orderShippedDate(order.getOrderShippedDate())
+                .orderStatus(order.getOrderStatus())
+                .orderTotal(order.getOrderTotal())
+                .user(userMapper.toMongoUser(order.getUser()))
+                .build();
+    }
+
     public OrderRequest toOrderRequest(Order order) {
         return OrderRequest.builder()
                 .orderNumber(order.getId())
@@ -51,7 +62,7 @@ public class OrderMapper {
                 .orderShippedDate(order.getOrderShippedDate())
                 .orderStatus(order.getOrderStatus())
                 .orderTotal(order.getOrderTotal())
-                .user(userMapper.toUserResponse(order.getUser()))
+                .user(order.getUser().getEmail())
                 .build();
     }
 
@@ -76,6 +87,27 @@ public class OrderMapper {
         return orderResponses;
     }
 
+    public List<Order> mapOrdersDBtoOrders(List<OrderDB> ordersDB) {
+        if (ordersDB == null) {
+            return null;
+        }
+        List<Order> orders = new ArrayList<>();
+        for (OrderDB orderDB : ordersDB) {
+            Order order = Order.builder()
+                    .id(orderDB.getId())
+                    .user(userMapper.toUser(orderDB.getUser()))
+                    .orderNumber(orderDB.getOrderNumber())
+                    .orderDate(orderDB.getOrderDate())
+                    .orderShippedDate(orderDB.getOrderShippedDate())
+                    .orderTotal(orderDB.getOrderTotal())
+                    .orderStatus(orderDB.getOrderStatus())
+                    .detailOrder(detailOrderMapper.toDetailOrder(orderDB.getDetailOrder())) // Implement the mapping logic
+                    .build();
+            orders.add(order);
+        }
+        return orders;
+    }
+
     public OrderResponse toOrderResponse(Order order) {
         return OrderResponse.builder()
                 .id(order.getId())
@@ -86,6 +118,12 @@ public class OrderMapper {
                 .orderTotal(order.getOrderTotal())
                 .orderStatus(order.getOrderStatus())
                 .detailOrder(detailOrderMapper.toDetailOrderResponse(order.getDetailOrder())) // Implement the mapping logic
+                .build();
+    }
+
+    public Order toOrderEmpty(String orderNumber) {
+        return Order.builder()
+                .id(orderNumber)
                 .build();
     }
 }

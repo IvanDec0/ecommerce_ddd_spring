@@ -2,6 +2,9 @@ package com.ecommerce_learning.ecommerce_learning.application.web.detailOrder.re
 
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -12,6 +15,6 @@ public class DetailOrderRequest {
     private double price;
     private double quantity;
     private double total;
-    //private OrderResponse order;
-    //private List<ProductResponse> products = new ArrayList<>();
+    private String orderNumber; // OrderNumber (Change to OrderId?)
+    private List<String> products = new ArrayList<>(); // List of product ids
 }

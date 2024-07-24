@@ -51,4 +51,16 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Boolean existsByName(String name) {
         return mongoProductRepository.existsByName(name);
     }
+
+    @Override
+    public Product update(Product product) {
+        ProductDB productDB = mapper.toMongoProduct(product);
+        ProductDB updatedProductDB = mongoProductRepository.save(productDB);
+        return mapper.toProduct(updatedProductDB);
+    }
+
+    @Override
+    public List<Product> findAllById(List<String> list) {
+        return mapper.mapProductsDBToProduct(mongoProductRepository.findAllById(list));
+    }
 }
