@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.ecommerce_learning.ecommerce_learning.shared.util.ReturnConstants.*;
+
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -23,16 +25,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Order order) {
         if (orderRepository.existsByOrderNumber(order.getOrderNumber())) {
-            throw new IllegalArgumentException("Order with order number " + order.getOrderNumber() + " already exists");
+            throw new IllegalArgumentException(String.format(ORDER_NOT_FOUND_BY_ORDER_NUMBER, order.getOrderNumber()));
         }
-        User user = userRepository.findByEmail(order.getUser().getEmail()).orElseThrow(() -> new IllegalArgumentException("User with email " + order.getUser().getEmail() + " not found"));
+        User user = userRepository.findByEmail(order.getUser().getEmail()).orElseThrow(() -> new IllegalArgumentException(String.format(USER_NOT_FOUND_BY_EMAIL, order.getUser().getEmail())));
         order.setUser(user);
         return orderRepository.save(order);
     }
 
     @Override
     public Order getOrderById(String id) {
-        return orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Order with id " + id + " not found"));
+        return orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(String.format(ORDER_NOT_FOUND, id)));
     }
 
     @Override
@@ -42,16 +44,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order updateOrder(String id, Order order) {
-        Order orderExisted = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Order with id " + id + " not found"));
+        Order orderExisted = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(String.format(ORDER_NOT_FOUND, id)));
         if (orderRepository.existsByOrderNumber(order.getOrderNumber())) {
-            throw new IllegalArgumentException("Order with order number " + order.getOrderNumber() + " already exists");
+            throw new IllegalArgumentException(String.format(ORDER_NUMBER_EXISTS, order.getOrderNumber()));
         }
         orderExisted.setOrderNumber(order.getOrderNumber());
         orderExisted.setOrderDate(order.getOrderDate());
         orderExisted.setOrderShippedDate(order.getOrderShippedDate());
         orderExisted.setOrderStatus(order.getOrderStatus());
         orderExisted.setOrderTotal(order.getOrderTotal());
-        User user = userRepository.findByEmail(order.getUser().getEmail()).orElseThrow(() -> new IllegalArgumentException("User with email " + order.getUser().getEmail() + " not found"));
+        User user = userRepository.findByEmail(order.getUser().getEmail()).orElseThrow(() -> new IllegalArgumentException(String.format(USER_NOT_FOUND_BY_EMAIL, order.getUser().getEmail())));
         orderExisted.setUser(user);
         // orderExisted.setDetailOrder(order.getDetailOrder());
         return orderRepository.update(orderExisted);
@@ -61,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(String id) {
         if (!orderRepository.existsById(id)) {
-            throw new IllegalArgumentException("Order with id " + id + " not found");
+            throw new IllegalArgumentException(String.format(ORDER_NOT_FOUND, id));
         }
         orderRepository.deleteById(id);
     }

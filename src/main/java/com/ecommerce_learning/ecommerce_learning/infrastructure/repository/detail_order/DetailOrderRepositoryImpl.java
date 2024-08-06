@@ -1,4 +1,4 @@
-package com.ecommerce_learning.ecommerce_learning.infrastructure.repository.detailOrder;
+package com.ecommerce_learning.ecommerce_learning.infrastructure.repository.detail_order;
 
 import com.ecommerce_learning.ecommerce_learning.domain.model.DetailOrder;
 import com.ecommerce_learning.ecommerce_learning.domain.repository.DetailOrderRepository;

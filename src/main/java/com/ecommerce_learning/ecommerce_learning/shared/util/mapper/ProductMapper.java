@@ -70,31 +70,37 @@ public class ProductMapper {
         if (!products.isEmpty()) {
             Object firstElement = products.get(0);
             if (firstElement instanceof Product) {
-                for (Object obj : products) {
-                    Product product = (Product) obj;
-                    ProductResponse productResponse = ProductResponse.builder()
-                            .id(product.getId())
-                            .name(product.getName())
-                            .description(product.getDescription())
-                            .price(product.getPrice())
-                            .stock(product.getStock())
-                            .image(product.getImage())
-                            .seller(product.getSeller() == null ? null : userMapper.toUserResponse(product.getSeller()))
-                            .detailOrders(product.getDetailOrders() == null ? null : detailOrderMapper.mapDetailOrdersResponse(product.getDetailOrders()))
-                            .build();
-                    productResponses.add(productResponse);
-                }
+                mapProductList(products, productResponses);
             } else if (firstElement instanceof ProductResponse) {
-                // Assuming you want to directly add ProductResponse objects to the list
-                // or perform some operations on them before adding
-                for (Object obj : products) {
-                    ProductResponse productResponse = (ProductResponse) obj;
-                    // Perform any necessary operations on ProductResponse objects
-                    productResponses.add(productResponse);
-                }
+                mapProductResponseList(products, productResponses);
             }
         }
         return productResponses;
+    }
+
+    private void mapProductList(List<?> products, List<ProductResponse> productResponses) {
+        for (Object obj : products) {
+            Product product = (Product) obj;
+            ProductResponse productResponse = ProductResponse.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .stock(product.getStock())
+                    .image(product.getImage())
+                    .seller(product.getSeller() == null ? null : userMapper.toUserResponse(product.getSeller()))
+                    .detailOrders(product.getDetailOrders() == null ? null : detailOrderMapper.mapDetailOrdersResponse(product.getDetailOrders()))
+                    .build();
+            productResponses.add(productResponse);
+        }
+    }
+
+    private void mapProductResponseList(List<?> products, List<ProductResponse> productResponses) {
+        for (Object obj : products) {
+            ProductResponse productResponse = (ProductResponse) obj;
+            // Perform any necessary operations on ProductResponse objects
+            productResponses.add(productResponse);
+        }
     }
 
     public List<Product> mapProductsDBToProduct(List<ProductDB> productsDB) {

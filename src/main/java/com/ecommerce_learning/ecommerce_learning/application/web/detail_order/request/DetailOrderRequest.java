@@ -1,4 +1,4 @@
-package com.ecommerce_learning.ecommerce_learning.application.web.detailOrder.request;
+package com.ecommerce_learning.ecommerce_learning.application.web.detail_order.request;
 
 import lombok.*;
 

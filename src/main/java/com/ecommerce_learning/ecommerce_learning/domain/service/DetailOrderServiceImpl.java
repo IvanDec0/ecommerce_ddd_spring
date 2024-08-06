@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.ecommerce_learning.ecommerce_learning.shared.util.ReturnConstants.*;
+
 @Service
 public class DetailOrderServiceImpl implements DetailOrderService {
 
@@ -28,9 +30,9 @@ public class DetailOrderServiceImpl implements DetailOrderService {
     @Override
     public DetailOrder addDetailOrder(DetailOrder detailOrder) {
         if (detailOrder.getId() != null) {
-            throw new IllegalArgumentException("Detail Order id must be null");
+            throw new IllegalArgumentException(DETAIL_ORDER_ID_MUST_BE_NULL);
         }
-        detailOrder.setOrder(orderRepository.findById(detailOrder.getOrder().getId()).orElseThrow(() -> new IllegalArgumentException("Order not found")));
+        detailOrder.setOrder(orderRepository.findById(detailOrder.getOrder().getId()).orElseThrow(() -> new IllegalArgumentException(String.format(ORDER_NOT_FOUND_BY_ID, detailOrder.getOrder().getId()))));
         detailOrder.setProducts(productRepository.findAllById(detailOrder.getProducts().stream().map(Product::getId).toList()));
         return detailOrderRepository.save(detailOrder);
     }
@@ -38,26 +40,29 @@ public class DetailOrderServiceImpl implements DetailOrderService {
     @Override
     public DetailOrder updateDetailOrder(String id, DetailOrder detailOrder) {
         if (id == null) {
-            throw new IllegalArgumentException("Detail Order id must not be null");
+            throw new IllegalArgumentException(DETAIL_ORDER_ID_MUST_BE_NULL);
         }
-        DetailOrder detailOrderExisted = detailOrderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Detail Order not found"));
+        DetailOrder detailOrderExisted = detailOrderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(String.format(DETAIL_ORDER_NOT_FOUND, id)));
         detailOrderExisted.setName(detailOrder.getName());
         detailOrderExisted.setPrice(detailOrder.getPrice());
         detailOrderExisted.setQuantity(detailOrder.getQuantity());
         detailOrderExisted.setTotal(detailOrder.getTotal());
-        detailOrderExisted.setOrder(orderRepository.findById(detailOrder.getOrder().getId()).orElseThrow(() -> new IllegalArgumentException("Order not found"))); // Find order by id
+        detailOrderExisted.setOrder(orderRepository.findById(detailOrder.getOrder().getId()).orElseThrow(() -> new IllegalArgumentException(String.format(ORDER_NOT_FOUND_BY_ID, detailOrder.getOrder().getId())))); // Find order by id
         detailOrderExisted.setProducts(productRepository.findAllById(detailOrder.getProducts().stream().map(Product::getId).toList())); // Find products by id list
         return detailOrderRepository.update(detailOrder);
     }
 
     @Override
     public void deleteDetailOrder(String id) {
+        if (!detailOrderRepository.existsById(id)) {
+            throw new IllegalArgumentException(String.format(DETAIL_ORDER_NOT_FOUND, id));
+        }
         detailOrderRepository.deleteById(id);
     }
 
     @Override
     public DetailOrder getDetailOrder(String id) {
-        return detailOrderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Detail Order not found"));
+        return detailOrderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(String.format(DETAIL_ORDER_NOT_FOUND, id)));
     }
 
     @Override

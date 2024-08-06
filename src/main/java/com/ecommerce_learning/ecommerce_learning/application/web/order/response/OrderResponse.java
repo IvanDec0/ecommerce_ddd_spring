@@ -1,6 +1,6 @@
 package com.ecommerce_learning.ecommerce_learning.application.web.order.response;
 
-import com.ecommerce_learning.ecommerce_learning.application.web.detailOrder.response.DetailOrderResponse;
+import com.ecommerce_learning.ecommerce_learning.application.web.detail_order.response.DetailOrderResponse;
 import com.ecommerce_learning.ecommerce_learning.application.web.user.response.UserResponse;
 import lombok.*;
 

@@ -1,7 +1,7 @@
 package com.ecommerce_learning.ecommerce_learning.shared.util.mapper;
 
-import com.ecommerce_learning.ecommerce_learning.application.web.detailOrder.request.DetailOrderRequest;
-import com.ecommerce_learning.ecommerce_learning.application.web.detailOrder.response.DetailOrderResponse;
+import com.ecommerce_learning.ecommerce_learning.application.web.detail_order.request.DetailOrderRequest;
+import com.ecommerce_learning.ecommerce_learning.application.web.detail_order.response.DetailOrderResponse;
 import com.ecommerce_learning.ecommerce_learning.domain.model.DetailOrder;
 import com.ecommerce_learning.ecommerce_learning.infrastructure.entity.DetailOrderDB;
 import org.springframework.context.annotation.Lazy;
