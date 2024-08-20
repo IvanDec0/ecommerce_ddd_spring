@@ -54,7 +54,8 @@ public class DetailOrderServiceImpl implements DetailOrderService {
 
     @Override
     public void deleteDetailOrder(String id) {
-        if (!detailOrderRepository.existsById(id)) {
+        boolean isExist = detailOrderRepository.existsById(id);
+        if (!isExist) {
             throw new IllegalArgumentException(String.format(DETAIL_ORDER_NOT_FOUND, id));
         }
         detailOrderRepository.deleteById(id);
